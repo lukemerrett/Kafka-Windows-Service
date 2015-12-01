@@ -79,17 +79,17 @@ namespace KafkaService.Installer
 
         private static void SetupWindowsEnvironment()
         {
-            var dataDir = string.Format("{0}\\data", KAFKA_VERSION);
-            var loggingDir = string.Format("{0}\\kafka-logs", KAFKA_VERSION);
+            var dataDir = string.Format("{0}/data", KAFKA_VERSION);
+            var loggingDir = string.Format("{0}/kafka-logs", KAFKA_VERSION);
 
-            var zookeeperConfig = string.Format("{0}\\config\\zookeeper.properties", KAFKA_VERSION);
-            var kafkaConfig = string.Format("{0}\\config\\server.properties", KAFKA_VERSION);
+            var zookeeperConfig = string.Format("{0}/config/zookeeper.properties", KAFKA_VERSION);
+            var kafkaConfig = string.Format("{0}/config/server.properties", KAFKA_VERSION);
 
             CreateDirectoryIfNotExists(dataDir);
             CreateDirectoryIfNotExists(loggingDir);
 
-            ReplaceLineInFile(zookeeperConfig, "dataDir=/tmp/zookeeper", "dataDir=data");
-            ReplaceLineInFile(kafkaConfig, "log.dirs=/tmp/kafka-logs", "log.dirs=kafka-logs");
+            ReplaceLineInFile(zookeeperConfig, "dataDir=/tmp/zookeeper", "dataDir=" + dataDir);
+            ReplaceLineInFile(kafkaConfig, "log.dirs=/tmp/kafka-logs", "log.dirs=" + loggingDir);
         }
 
         private static void CreateDirectoryIfNotExists(string dir)
