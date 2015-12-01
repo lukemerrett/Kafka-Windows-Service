@@ -4,36 +4,6 @@ $ExtractedFolder = "kafka_2.10-0.8.2.0"
 
 $7ZipLocation = "C:\Program Files\7-Zip\7z.exe"
 
-$AlreadyDownloaded = $False
-
-cd $PSScriptRoot
-
-if (Test-Path $ExtractedFolder) {
-    $AlreadyDownloaded = $True
-    WRITE-HOST "$ExtractedFolder already downloaded and extracted"
-}
-
-if (-not($AlreadyDownloaded)) {
-    if (Test-Path $TarFilename) {
-        Remove-Item $TarFilename -Force
-    }
-
-    if (Test-Path $UnCompressedTarFilename) {
-        Remove-Item $UnCompressedTarFilename -Force
-    }
-
-    if (Test-Path $ExtractedFolder) {
-        Remove-Item $ExtractedFolder -Force
-    }
-
-    curl http://apache.mirror.anlx.net/kafka/0.8.2.0/kafka_2.10-0.8.2.0.tgz  -OutFile $TarFilename
-
-    & $7ZipLocation e $TarFilename
-    & $7ZipLocation x $UnCompressedTarFilename 
-
-    WRITE-HOST "Successfully downloaded and extracted $TarFilename"
-}
-
 $DataDir = "$ExtractedFolder/data"
 $ZookeeperConfig = "$ExtractedFolder\config\zookeeper.properties"
 $LineToReplace = "^dataDir=/tmp/zookeeper$"

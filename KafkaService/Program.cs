@@ -23,8 +23,8 @@ namespace KafkaService
                 x.StartAutomatically();
 
                 x.SetDescription("Wrapper around Apache Kafka for starting and stopping both Zookeeper and Kafka.");
-                x.SetDisplayName("Kafka Service");
-                x.SetServiceName("Kafka Service");
+                x.SetDisplayName("Kafka.Service");
+                x.SetServiceName("Kafka.Service");
             });
         }
     }
