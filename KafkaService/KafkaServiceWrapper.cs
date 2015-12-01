@@ -19,8 +19,8 @@ namespace KafkaService
         {
             ApacheKafkaInstaller.Install();
 
-            _zookeeperProcess = Process.Start("powershell.exe", "-file ServiceRunners\\02_StartZookeeper.ps1");
-            _kafkaProcess = Process.Start("powershell.exe", "-file ServiceRunners\\03_StartKafka.ps1");
+            _zookeeperProcess = Process.Start("powershell.exe", "-file ServiceRunners\\StartZookeeper.ps1");
+            _kafkaProcess = Process.Start("powershell.exe", "-file ServiceRunners\\StartKafka.ps1");
         }
 
         public void Stop()

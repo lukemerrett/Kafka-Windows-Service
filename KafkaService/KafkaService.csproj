@@ -56,10 +56,10 @@
     <None Include="ServiceRunners\01_Install_Apache_Kafka.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="ServiceRunners\02_StartZookeeper.ps1">
+    <None Include="ServiceRunners\StartZookeeper.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="ServiceRunners\03_StartKafka.ps1">
+    <None Include="ServiceRunners\StartKafka.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
