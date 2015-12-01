@@ -194,3 +194,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# Kafka Install dir and tars
+*kafka_2.10-0.8.2.0*
