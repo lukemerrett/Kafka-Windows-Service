@@ -19,14 +19,14 @@ namespace KafkaService
         {
             ApacheKafkaInstaller.Install();
 
-            _zookeeperProcess = Process.Start("powershell.exe", "-file ServiceRunners\\StartZookeeper.ps1");
-            _kafkaProcess = Process.Start("powershell.exe", "-file ServiceRunners\\StartKafka.ps1");
+            //_zookeeperProcess = Process.Start("powershell.exe", "-file ServiceRunners\\StartZookeeper.ps1");
+            //_kafkaProcess = Process.Start("powershell.exe", "-file ServiceRunners\\StartKafka.ps1");
         }
 
         public void Stop()
         {
-            KillProcessAndChildren(_kafkaProcess.Id);
-            KillProcessAndChildren(_zookeeperProcess.Id);
+            //KillProcessAndChildren(_kafkaProcess.Id);
+            //KillProcessAndChildren(_zookeeperProcess.Id);
         }
 
         private static void KillProcessAndChildren(int pid)

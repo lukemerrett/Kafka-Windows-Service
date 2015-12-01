@@ -29,6 +29,7 @@ namespace KafkaService.Installer
         public static void Install()
         {
             DownloadAndExtractKafka();
+            SetupWindowsEnvironment();
         }
 
         private static void DownloadAndExtractKafka()
@@ -74,6 +75,50 @@ namespace KafkaService.Installer
             Process.Start(SEVENZIP_LOCATION, "x " + UNCOMPRESSED_TAR_FILENAME).WaitForExit();
 
             Console.WriteLine("Extracted {0} into {1}", TAR_FILENAME, KAFKA_VERSION);
+        }
+
+        private static void SetupWindowsEnvironment()
+        {
+            var dataDir = string.Format("{0}\\data", KAFKA_VERSION);
+            var loggingDir = string.Format("{0}\\kafka-logs", KAFKA_VERSION);
+
+            var zookeeperConfig = string.Format("{0}\\config\\zookeeper.properties", KAFKA_VERSION);
+            var kafkaConfig = string.Format("{0}\\config\\server.properties", KAFKA_VERSION);
+
+            CreateDirectoryIfNotExists(dataDir);
+            CreateDirectoryIfNotExists(loggingDir);
+
+            ReplaceLineInFile(zookeeperConfig, "dataDir=/tmp/zookeeper", "dataDir=data");
+            ReplaceLineInFile(kafkaConfig, "log.dirs=/tmp/kafka-logs", "log.dirs=kafka-logs");
+        }
+
+        private static void CreateDirectoryIfNotExists(string dir)
+        {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
+        private static void ReplaceLineInFile(string filename, string lineToMatch, string replaceWith)
+        {
+            var contents = File.ReadAllLines(filename);
+
+            var fileToOutput = new List<string>();
+
+            foreach(var line in contents)
+            {
+                var outputLine = line;
+
+                if (line == lineToMatch)
+                {
+                    outputLine = replaceWith;
+                }
+
+                fileToOutput.Add(outputLine);
+            }
+
+            File.WriteAllLines(filename, fileToOutput);
         }
     }
 }
