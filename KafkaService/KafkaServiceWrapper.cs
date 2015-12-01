@@ -1,5 +1,6 @@
 ﻿#region
 
+using KafkaService.Installer;
 using System;
 using System.Diagnostics;
 using System.Management;
@@ -16,13 +17,7 @@ namespace KafkaService
 
         public void Start()
         {
-            using (var installKafkaProcess = Process.Start("powershell.exe", "-file ServiceRunners\\01_Install_Apache_Kafka.ps1"))
-            {
-                if (installKafkaProcess != null)
-                {
-                    installKafkaProcess.WaitForExit();
-                }
-            }
+            ApacheKafkaInstaller.Install();
 
             _zookeeperProcess = Process.Start("powershell.exe", "-file ServiceRunners\\02_StartZookeeper.ps1");
             _kafkaProcess = Process.Start("powershell.exe", "-file ServiceRunners\\03_StartKafka.ps1");
