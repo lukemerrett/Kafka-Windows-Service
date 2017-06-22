@@ -1,5 +1,7 @@
 ﻿#region
 
+using System;
+using KafkaService.Installer;
 using Topshelf;
 
 #endregion

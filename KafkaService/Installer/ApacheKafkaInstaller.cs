@@ -14,12 +14,6 @@ namespace KafkaService.Installer
     /// </summary>
     public static class ApacheKafkaInstaller
     {
-        private const string KAFKA_VERSION = "kafka_2.10-0.8.2.0";
-        private const string TAR_FILENAME = KAFKA_VERSION + ".tgz";
-        private const string UNCOMPRESSED_TAR_FILENAME = KAFKA_VERSION + ".tar";
-
-        private const string DOWNLOAD_URL = @"http://apache.mirror.anlx.net/kafka/0.8.2.0/kafka_2.10-0.8.2.0.tgz";
-
         private const string SEVENZIP_LOCATION = @"Lib\7z.exe";
 
         /// <summary>
@@ -34,21 +28,24 @@ namespace KafkaService.Installer
 
         private static void DownloadAndExtractKafka()
         {
-            if (Directory.Exists(KAFKA_VERSION))
+            if (Directory.Exists(Constants.KafkaLocation))
             {
-                Console.WriteLine("{0} already downloaded and extracted", KAFKA_VERSION);
+                Console.WriteLine("{0} already downloaded and extracted", Constants.KafkaLocation);
                 return;
             }
 
             // Delete the extracted file so we can unzip it again.
-            DeleteFileIfExists(UNCOMPRESSED_TAR_FILENAME);
+            DeleteFileIfExists(Constants.UncompressedTarFileName);
 
-            if (!File.Exists(TAR_FILENAME))
+            if (!File.Exists(Constants.TarFileName))
             {
                 DownloadKafka();
             }
 
             ExtractKafka();
+            MoveKafka();
+            DeleteFileIfExists(Constants.UncompressedTarFileName);
+            DeleteFileIfExists(Constants.TarFileName);
         }
 
         private static void DeleteFileIfExists(string filename)
@@ -63,33 +60,38 @@ namespace KafkaService.Installer
         {
             using (var client = new WebClient())
             {
-                client.DownloadFile(DOWNLOAD_URL, TAR_FILENAME);
+                client.DownloadFile(Constants.DownloadUrl, Constants.TarFileName);
             }
 
-            Console.WriteLine("Downloaded {0}", TAR_FILENAME);
+            Console.WriteLine("Downloaded {0}", Constants.TarFileName);
         }
 
         private static void ExtractKafka()
         {
-            Process.Start(SEVENZIP_LOCATION, "e " + TAR_FILENAME).WaitForExit();
-            Process.Start(SEVENZIP_LOCATION, "x " + UNCOMPRESSED_TAR_FILENAME).WaitForExit();
+            Process.Start(SEVENZIP_LOCATION, "e " + Constants.TarFileName).WaitForExit();
+            Process.Start(SEVENZIP_LOCATION, "x " + Constants.UncompressedTarFileName).WaitForExit();
 
-            Console.WriteLine("Extracted {0} into {1}", TAR_FILENAME, KAFKA_VERSION);
+            Console.WriteLine("Extracted {0} into {1}", Constants.TarFileName, Constants.KafkaScalaVersion);
+        }
+
+        private static void MoveKafka()
+        {
+            string sourceDirectory = Constants.KafkaScalaVersion;
+            string destinationDirectory = Constants.KafkaLocation;
+
+            Directory.Move(sourceDirectory, destinationDirectory);
         }
 
         private static void SetupWindowsEnvironment()
         {
-            var dataDir = string.Format("{0}/data", KAFKA_VERSION);
-            var loggingDir = string.Format("{0}/kafka-logs", KAFKA_VERSION);
+            var dataDir = string.Format("{0}/data", Constants.KafkaScalaVersion);
+            var loggingDir = string.Format("{0}/kafka-logs", Constants.KafkaScalaVersion);
 
-            var zookeeperConfig = string.Format("{0}/config/zookeeper.properties", KAFKA_VERSION);
-            var kafkaConfig = string.Format("{0}/config/server.properties", KAFKA_VERSION);
+            CreateDirectoryIfNotExists(Constants.DataDir);
+            CreateDirectoryIfNotExists(Constants.LogDir);
 
-            CreateDirectoryIfNotExists(dataDir);
-            CreateDirectoryIfNotExists(loggingDir);
-
-            ReplaceLineInFile(zookeeperConfig, "dataDir=/tmp/zookeeper", "dataDir=" + dataDir);
-            ReplaceLineInFile(kafkaConfig, "log.dirs=/tmp/kafka-logs", "log.dirs=" + loggingDir);
+            ReplaceLineInFile(Constants.ZookeeperConfig, "dataDir=/tmp/zookeeper", "dataDir=" + dataDir);
+            ReplaceLineInFile(Constants.KafkaConfig, "log.dirs=/tmp/kafka-logs", "log.dirs=" + loggingDir);
         }
 
         private static void CreateDirectoryIfNotExists(string dir)

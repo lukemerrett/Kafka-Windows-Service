@@ -18,8 +18,8 @@ namespace KafkaService
         {
             ApacheKafkaInstaller.Install();
 
-            _zookeeperProcess = StartProcess(@"kafka_2.10-0.8.2.0\bin\windows\zookeeper-server-start.bat kafka_2.10-0.8.2.0\config\zookeeper.properties");
-            _kafkaProcess = StartProcess(@"kafka_2.10-0.8.2.0\bin\windows\kafka-server-start.bat kafka_2.10-0.8.2.0\config\server.properties");
+            _zookeeperProcess = StartProcess(Constants.ZookeeperProcess);
+            _kafkaProcess = StartProcess(Constants.KafkaProcess);
         }
 
         public void Stop()
