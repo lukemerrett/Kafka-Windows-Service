@@ -32,6 +32,11 @@
             get { return @"C:\";  }
         }
 
+        public static string RootDirectoryLinux
+        {
+            get { return @"C:/"; }
+        }
+
         public static string KafkaLocation
         {
             get { return RootDirectory + KafkaScalaVersion;  }
@@ -42,7 +47,7 @@
             get
             {
                 return RootDirectory +
-                    KafkaScalaVersion + @"\bin\windows\zookeeper-server-start.bat " + @"C:\" + KafkaScalaVersion + @"\config\zookeeper.properties";
+                    KafkaScalaVersion + @"\bin\windows\zookeeper-server-start.bat " + KafkaLocation + @"\config\zookeeper.properties";
             }
         }
 
@@ -51,7 +56,7 @@
             get
             {
                 return RootDirectory +
-                    KafkaScalaVersion + @"\bin\windows\kafka-server-start.bat " + @"C:\" + KafkaScalaVersion + @"\config\server.properties";
+                    KafkaScalaVersion + @"\bin\windows\kafka-server-start.bat " + KafkaLocation + @"\config\server.properties";
             }
         }
 
@@ -73,6 +78,16 @@
         public static string LogDir
         {
             get { return RootDirectory + KafkaScalaVersion + @"\kafka-logs"; }
+        }
+
+        public static string DataDirLinux
+        {
+            get { return RootDirectoryLinux + KafkaScalaVersion + @"/data"; }
+        }
+
+        public static string LogDirLinux
+        {
+            get { return RootDirectoryLinux + KafkaScalaVersion + @"/kafka-logs"; }
         }
     }
 }

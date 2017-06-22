@@ -35,7 +35,8 @@ namespace KafkaService
             processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
             {
                 CreateNoWindow = true,
-                UseShellExecute = false
+                UseShellExecute = false,
+                Verb = "runas"
             };
 
             return Process.Start(processInfo);
