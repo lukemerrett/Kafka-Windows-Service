@@ -4,7 +4,7 @@ C# Wrapper to host [Apache Kafka](http://kafka.apache.org/) as a Windows Service
 
 On starting the service will:
 
-* Download Kafka 2.10-0.8.2.0
+* Download Kafka 2.12-0.10.2.1
 * Adjust the settings for a Windows environment
 * Run Zookeeper in a seperate process
 * Run Kafka in a seperate process
@@ -15,7 +15,7 @@ This is a single instance of Kafka useful for developing against locally.
 
 You'll need the following first to get the service running:
 
-* [JDK 1.7 or greater](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [JDK 1.8 or greater](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * The [JAVA_HOME](https://confluence.atlassian.com/doc/setting-the-java_home-variable-in-windows-8895.html) system environmental variable set correctly
 
 ## Installation
@@ -36,3 +36,7 @@ If you wish to uninstall the service:
 * Open Command Prompt as Administrator
 * CD to the bin/Release directory
 * Run "KafkaService.exe uninstall"
+
+## Configuration
+
+You can configure the version of Kafka and the install location (default is C:\kafka_2.12-0.10.2.1) in the Constants.cs file.
