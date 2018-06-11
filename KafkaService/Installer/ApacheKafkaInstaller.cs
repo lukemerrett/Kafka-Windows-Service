@@ -131,6 +131,7 @@ namespace KafkaService.Installer
                     {
                         currentLine = replaceWith;
                     }
+
                     fileToOutput.Add(currentLine);
                 }
             }
