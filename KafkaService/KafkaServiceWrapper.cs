@@ -30,9 +30,7 @@ namespace KafkaService
 
         private static Process StartProcess(string command)
         {
-            ProcessStartInfo processInfo;
-
-            processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,

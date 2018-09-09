@@ -1,14 +1,12 @@
 ﻿#region
 
-using System;
-using KafkaService.Installer;
 using Topshelf;
 
 #endregion
 
 namespace KafkaService
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

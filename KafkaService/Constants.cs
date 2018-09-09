@@ -1,6 +1,6 @@
 ﻿namespace KafkaService
 {
-    public class Constants
+    public static class Constants
     {
         public static string KafkaVersion
         {

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace KafkaService.Installer
 {
@@ -79,8 +77,26 @@ namespace KafkaService.Installer
             string sourceDirectory = Constants.KafkaScalaVersion;
             string destinationDirectory = Constants.KafkaLocation;
 
-            Directory.Move(sourceDirectory, destinationDirectory);
+            MoveAcrossVolumes(sourceDirectory, destinationDirectory);
         }
+
+        private static void MoveAcrossVolumes(string sourceDirectory, string destinationDirectory)
+        {
+            foreach (var file in Directory.GetFileSystemEntries(sourceDirectory, "*", SearchOption.AllDirectories))
+            {
+                var output = Regex.Replace(file, @"^" + sourceDirectory, destinationDirectory);
+                if (File.Exists(file))
+                {
+                    File.Copy(file, output, true);
+                }
+                else
+                {
+                    Directory.CreateDirectory(output);
+                }
+            }
+            Directory.Delete(sourceDirectory, true);
+        }
+
 
         private static void SetupWindowsEnvironment()
         {
@@ -104,20 +120,20 @@ namespace KafkaService.Installer
 
         private static void ReplaceLineInFile(string filename, string lineToMatch, string replaceWith)
         {
-            var contents = File.ReadAllLines(filename);
-
             var fileToOutput = new List<string>();
-
-            foreach(var line in contents)
+            using (var inputStream = File.OpenRead(filename))
+            using (var inputReader = new StreamReader(inputStream))
             {
-                var outputLine = line;
-
-                if (line == lineToMatch)
+                string currentLine;
+                while ((currentLine = inputReader.ReadLine()) != null)
                 {
-                    outputLine = replaceWith;
-                }
+                    if (currentLine == lineToMatch)
+                    {
+                        currentLine = replaceWith;
+                    }
 
-                fileToOutput.Add(outputLine);
+                    fileToOutput.Add(currentLine);
+                }
             }
 
             File.WriteAllLines(filename, fileToOutput);
